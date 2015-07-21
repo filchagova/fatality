@@ -14,16 +14,7 @@ body {
   min-height: 100%;
 }
 
-a, a:visited {
-	outline:none;
-	color:#1c4f64;
-}
-
-a:hover{
-	text-decoration:none;
-}
-
-section, footer, header{
+section, header{
 	display: block;
 }
 
