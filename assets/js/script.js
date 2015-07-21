@@ -98,7 +98,7 @@ $(function(){
 		scroller.append(markup);
 	}
 
-	/* Кнопочки */
+	/* Handling the previous / next arrows */
 
 	var currentSlide = 0;
 	weatherDiv.find('a.previous').click(function(e){
