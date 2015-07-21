@@ -5,7 +5,7 @@
 
 
 html{
-	background:url('../img/background.jpg');
+	background:url(assets/img/background.jpg');
 }
 
 
@@ -59,13 +59,3 @@ h1{
     padding-top:150px;
 }
 
-#image{
-	background:url('../img/cat.png') no-repeat;
-	height: 145px;
-	left: 50%;
-	position: absolute;
-	top: 250px;
-	margin-left: -542px;
-	width: 222px;
-	z-index: -1;
-}
