@@ -5,7 +5,7 @@
 
 
 html{
-	background:url('../img/background.jpg');
+	background:url('../images/background.jpg');
 }
 
 
@@ -76,7 +76,7 @@ h1{
 }
 
 #weather:before{
-	background: url("../img/preloader.gif") no-repeat center center #111;
+	background: url("../images/preloader.gif") no-repeat center center #111;
 	border: 1px solid #5cfffd;
 	border-radius: 50% 50% 50% 50%;
 	content: "";
@@ -109,7 +109,7 @@ h1{
 
 #weather.loaded{
 	border-radius:3px;
-	background:url('../img/weather_bg.jpg') no-repeat;
+	background:url('../images/weather_bg.jpg') no-repeat;
 	box-shadow:5px 0 0 rgba(0,0,0,0.15);
 }
 
@@ -171,7 +171,7 @@ h1{
 }
 
 .arrow{
-	background:url('../img/arrows.png') no-repeat;
+	background:url('../images/arrows.png') no-repeat;
 	width:34px;
 	height:45px;
 	position:absolute;
