@@ -2,13 +2,13 @@ $(function(){
 
 	/* Configuration */
 
-	var DEG = 'c';			
+	var DEG = 'c';			// для Цельсію
 
 	var weatherDiv = $('#weather'),
 		scroller = $('#scroller'),
 		location = $('p.location');
 
-	
+	// Підтримка браузером геолокації + помилка, якщо не показує
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(locationSuccess, locationError);
 	}
@@ -23,12 +23,12 @@ $(function(){
 
 		try{
 
-			
+			// Отримуємо кеш
 			var cache = localStorage.weatherCache && JSON.parse(localStorage.weatherCache);
 
 			var d = new Date();
 
-			
+			// If кеш новіший, ніж 30 хвилин, юзаємо кеш
 			if(cache && cache.timestamp && cache.timestamp > d.getTime() - 30*60*1000){
 
 				// Зміщення від UTC (поворот зміщення хвилин в мілісекунди)
@@ -37,7 +37,7 @@ $(function(){
 				var country = cache.data.city.country;
 
 				$.each(cache.data.list, function(){
-					
+					// "this" підтримує обєкт прогнозу
 
 					// Запит на отримання часу (api повертає назад в utc)
 					var localTime = new Date(this.dt*1000 - offset);
@@ -51,12 +51,12 @@ $(function(){
 
 				});
 
-				
+				// Повертаємо локацію на сайт
 				location.html(city+', <b>'+country+'</b>');
 
 				weatherDiv.addClass('loaded');
 
-				
+				// Налаштовуємо слайди на хоумпейдж
 				showSlide(0);
 
 			}
@@ -112,7 +112,7 @@ $(function(){
 	});
 
 
-	// кнопки керуємо
+	// керування кнопками
 
 	$(document).keydown(function(e){
 		switch(e.keyCode){
