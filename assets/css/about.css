@@ -59,3 +59,13 @@ h1{
     padding-top:150px;
 }
 
+#footer {
+    clear:both; 
+    width:100%; 
+    height:50px; 
+    text-align:center;
+    position: absolute;
+    bottom: 0px;
+    font: 30px "Bangers";
+    color:darkolivegreen;
+
