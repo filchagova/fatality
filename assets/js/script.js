@@ -2,8 +2,7 @@ $(function(){
 
 	/* Configuration */
 
-	var DEG = 'c';			// для Цельсію
-
+	var DEG = 'c';			
 	var weatherDiv = $('#weather'),
 		scroller = $('#scroller'),
 		location = $('p.location');
@@ -18,16 +17,11 @@ $(function(){
 
 	// локація + дані APIшки OpenWeatherMap
 	// =назва локації і прогноз
-
 	function locationSuccess(position) {
-
 		try{
-
 			// Отримуємо кеш
 			var cache = localStorage.weatherCache && JSON.parse(localStorage.weatherCache);
-
 			var d = new Date();
-
 			// If кеш новіший, ніж 30 хвилин, юзаємо кеш
 			if(cache && cache.timestamp && cache.timestamp > d.getTime() - 30*60*1000){
 
@@ -37,8 +31,6 @@ $(function(){
 				var country = cache.data.city.country;
 
 				$.each(cache.data.list, function(){
-					// "this" підтримує обєкт прогнозу
-
 					// Запит на отримання часу (api повертає назад в utc)
 					var localTime = new Date(this.dt*1000 - offset);
 
@@ -48,58 +40,43 @@ $(function(){
 						this.weather[0].main + ' <b>' + convertTemperature(this.main.temp_min) + '°' + DEG +
 												' / ' + convertTemperature(this.main.temp_max) + '°' + DEG+'</b>'
 					);
-
 				});
-
 				// Повертаємо локацію на сайт
 				location.html(city+', <b>'+country+'</b>');
 
 				weatherDiv.addClass('loaded');
-
 				// Налаштовуємо слайди на хоумпейдж
 				showSlide(0);
-
 			}
 
 			else{
-			
 				// Звертаємось до AJAX якщо кеш застарів 
-
 				var weatherAPI = 'http://api.openweathermap.org/data/2.5/forecast?lat='+position.coords.latitude+
 									'&lon='+position.coords.longitude+'&callback=?'
 
 				$.getJSON(weatherAPI, function(response){
-
-					//Кешуємо
 					localStorage.weatherCache = JSON.stringify({
 						timestamp:(new Date()).getTime(),	// getTime() повертає в мілісек
 						data: response
 					});
-
-					// Повторний виклик функції
 					locationSuccess(position);
 				});
 			}
-
 		}
 		catch(e){
 			showError("We can't find information about your city!");
 			window.console && console.error(e);
 		}
 	}
-
 	function addWeather(icon, day, condition){
-
 		var markup = '<li>'+
 			'<images src="assets/images/icons/'+ icon +'.png" />'+
 			' <p class="day">'+ day +'</p> <p class="cond">'+ condition +
 			'</p></li>';
-
 		scroller.append(markup);
 	}
 
 	/* Handling the previous / next arrows */
-
 	var currentSlide = 0;
 	weatherDiv.find('a.previous').click(function(e){
 		e.preventDefault();
@@ -110,10 +87,7 @@ $(function(){
 		e.preventDefault();
 		showSlide(currentSlide+1);
 	});
-
-
 	// керування кнопками
-
 	$(document).keydown(function(e){
 		switch(e.keyCode){
 			case 37: 
@@ -127,7 +101,6 @@ $(function(){
 
 	function showSlide(i){
 		var items = scroller.find('li');
-
 		if (i >= items.length || i < 0 || scroller.is(':animated')){
 			return false;
 		}
@@ -147,7 +120,6 @@ $(function(){
 	}
 
 	/* Error handling functions */
-
 	function locationError(error){
 		switch(error.code) {
 			case error.TIMEOUT:
@@ -163,16 +135,13 @@ $(function(){
 				showError('An unknown error occured!');
 				break;
 		}
-
 	}
 
 	function convertTemperature(kelvin){
-		// функція перераховує фаренгейти в цельсії:
 		return Math.round(DEG == 'c' ? (kelvin - 273.15) : (kelvin*9/5 - 459.67));
 	}
 
 	function showError(msg){
 		weatherDiv.addClass('error').html(msg);
 	}
-
 });
