@@ -3,14 +3,15 @@
 	padding:0;
 }
 
-
-html{
-	background: url('../images/background.jpg');
+html {
+  height: 100%;
 }
 
-
-body{
-	font-family: 'Bangers', cursive;
+body {
+  font-family: 'Bangers', cursive;
+  background: url('../images/background.jpg') #79c9fa center bottom repeat-x;
+  height: 100%;
+  min-height: 100%;
 }
 
 a, a:visited {
