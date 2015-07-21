@@ -2,13 +2,13 @@ $(function(){
 
 	/* Configuration */
 
-	var DEG = 'c';			// c for celsius, f for fahrenheit
+	var DEG = 'c';			// для Цельсію
 
 	var weatherDiv = $('#weather'),
 		scroller = $('#scroller'),
 		location = $('p.location');
 
-	// Does this browser support geolocation?
+	// Підтримка браузером геолокації + помилка, якщо не показує
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(locationSuccess, locationError);
 	}
@@ -16,67 +16,67 @@ $(function(){
 		showError("Your browser does not support Geolocation!");
 	}
 
-	// Get user's location, and use OpenWeatherMap
-	// to get the location name and weather forecast
+	// локація + дані APIшки OpenWeatherMap
+	// =назва локації і прогноз
 
 	function locationSuccess(position) {
 
 		try{
 
-			// Retrive the cache
+			// Отримуємо кеш
 			var cache = localStorage.weatherCache && JSON.parse(localStorage.weatherCache);
 
 			var d = new Date();
 
-			// If the cache is newer than 30 minutes, use the cache
+			// If кеш новіший, ніж 30 хвилин, юзаємо кеш
 			if(cache && cache.timestamp && cache.timestamp > d.getTime() - 30*60*1000){
 
-				// Get the offset from UTC (turn the offset minutes into ms)
+				// Зміщення від UTC (поворот зміщення хвилин в мілісекунди)
 				var offset = d.getTimezoneOffset()*60*1000;
 				var city = cache.data.city.name;
 				var country = cache.data.city.country;
 
 				$.each(cache.data.list, function(){
-					// "this" holds a forecast object
+					// "this" підтримує обєкт прогнозу
 
-					// Get the local time of this forecast (the api returns it in utc)
+					// Запит на отримання часу (api повертає назад в utc)
 					var localTime = new Date(this.dt*1000 - offset);
 
 					addWeather(
 						this.weather[0].icon,
-						moment(localTime).calendar(),	// We are using the moment.js library to format the date
+						moment(localTime).calendar(),	// Юзаємо б-ку moment.js для того,щоб форматувати дату
 						this.weather[0].main + ' <b>' + convertTemperature(this.main.temp_min) + '°' + DEG +
 												' / ' + convertTemperature(this.main.temp_max) + '°' + DEG+'</b>'
 					);
 
 				});
 
-				// Add the location to the page
+				// Повертаємо локацію на сайт
 				location.html(city+', <b>'+country+'</b>');
 
 				weatherDiv.addClass('loaded');
 
-				// Set the slider to the first slide
+				// Налаштовуємо слайди на хоумпейдж
 				showSlide(0);
 
 			}
 
 			else{
 			
-				// If the cache is old or nonexistent, issue a new AJAX request
+				// Звертаємось до AJAX якщо кеш застарів 
 
 				var weatherAPI = 'http://api.openweathermap.org/data/2.5/forecast?lat='+position.coords.latitude+
 									'&lon='+position.coords.longitude+'&callback=?'
 
 				$.getJSON(weatherAPI, function(response){
 
-					// Store the cache
+					//Кешуємо
 					localStorage.weatherCache = JSON.stringify({
-						timestamp:(new Date()).getTime(),	// getTime() returns milliseconds
+						timestamp:(new Date()).getTime(),	// getTime() повертає в мілісек
 						data: response
 					});
 
-					// Call the function again
+					// Повторний виклик функції
 					locationSuccess(position);
 				});
 			}
@@ -91,7 +91,7 @@ $(function(){
 	function addWeather(icon, day, condition){
 
 		var markup = '<li>'+
-			'<img src="assets/images/icons/'+ icon +'.png" />'+
+			'<img src="assets/img/icons/'+ icon +'.png" />'+
 			' <p class="day">'+ day +'</p> <p class="cond">'+ condition +
 			'</p></li>';
 
@@ -112,7 +112,7 @@ $(function(){
 	});
 
 
-	// listen for arrow keys
+	// керування кнопками
 
 	$(document).keydown(function(e){
 		switch(e.keyCode){
@@ -167,7 +167,7 @@ $(function(){
 	}
 
 	function convertTemperature(kelvin){
-		// Convert the temperature to either Celsius or Fahrenheit:
+		// функція перераховує фаренгейти в цельсії:
 		return Math.round(DEG == 'c' ? (kelvin - 273.15) : (kelvin*9/5 - 459.67));
 	}
 
